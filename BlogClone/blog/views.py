@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 from django.views.generic import (TemplateView, ListView, DetailView,
                                     CreateView, UpdateView, DeleteView)
 
@@ -11,6 +12,9 @@ from from django.urls import reverse_lazy
 #this import is explained in the 'CreatePostView'
 #its the class based equivalent to the 'login_required' import for function based views
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+
 
 
 class AboutView(TemplateView):
@@ -68,3 +72,53 @@ class DraftListView(LoginRequiredMixin, ListView):
     #Now its very similar to the PostListView just this time making sure that there is NO publication date on the post
     def get_queryset(self):
         return Post.objects.filter(published_date__isnull = True).order_by('created_date')
+
+########################################################
+#now we do the views needed for the commment function###
+
+@login_required
+def add_comment_to_post(request,pk):
+    # either get post object with corresponding pk or show 404 page
+    post = get_object_or_404(Post,pk=pk)
+    #if someone filled out the form and hit the submit button (method == 'POST')
+    if request.method == 'POST':
+        #pass the request to the Comment form and make it form
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            # post object is in the comment form as a foreign key from Post model
+            # So here we say because the form is valid make the comment.post equal to the post itself
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
+
+    else:
+        #if not hit submit yet show the CommentForm (connected in the comment_form.html)
+        form = Commentform()
+    return render(request, 'blog/comment_form.html', {'form':form})
+
+
+@login_required
+def comment_approve(request,pk):
+    comment = get_object_or_404(Comment,pk=pk)
+    #approve method in comment model, which sets approved to true
+    comment.approve()
+    #again post is defined in Comment model as a foreign key
+    #means we are sending the user back to the actual post
+    return redirect('post_detail',pk=comment.post.pk)
+
+@login_required
+def comment_remove(request,pk):
+    comment = get_object_or_404(Comment,pk=pk)
+    #when we delete the comment we dont habe comment.post.pk anymore to redirect to
+    #thats why before deleting it we reassign it to a new variable 'post_pk'
+    post_pk = comment.post.pk
+    comment.delete()
+    return redirect('post_detail',pk=post_pk)
+
+
+@login_required
+def post_publish(request,pk):
+    post = get_object_or_404(Post,pk=pk)
+    post.publish
+    return redirect('post_detail',pk=pk)
