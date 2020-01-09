@@ -1,0 +1,23 @@
+{%extends 'blog/base.html'%}
+
+{%block content%}
+<div class="jumbotron">
+  <h2>please login</h2>
+  <h3>must be a superuser</h3>
+
+  {%if form.errors%}
+    <p>YOUR USERNAME AND PASSWORD DID NOT MATCH</p>
+  {%endif%}
+
+  <form action="{% url 'login' %}" method="POST">
+    {%csrf_token%}
+      {%form.as_p%}
+      <input type="submit" class ="btn" value="Login">
+      <!-- The {{next}} is part of the django login view and handles where to go after user logged in -->
+      <input type="hidden" name="next" value="{{next}}">
+  </form>
+
+
+</div>
+
+{%endblock%}

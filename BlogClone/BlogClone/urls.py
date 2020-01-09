@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views
 
 
 
@@ -22,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # alles was nicht die adminseite ist, geht über die app urls.py
     url(r'', include('blogs.urls')),
+    url(r'accounts/login/$',views.login,name='login'),
+    url(r'accounts/logout/$',views.logout,name='logout', kwargs={'next_page':'/'})
 ]
