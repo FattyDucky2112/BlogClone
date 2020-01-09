@@ -7,12 +7,13 @@ from blog.models import Post, Comment
 from blog.forms import PostForm, CommentForm
 
 #for the DeleteView
-from from django.urls import reverse_lazy
+from django.urls import reverse_lazy
 
 #this import is explained in the 'CreatePostView'
 #its the class based equivalent to the 'login_required' import for function based views
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -94,7 +95,7 @@ def add_comment_to_post(request,pk):
 
     else:
         #if not hit submit yet show the CommentForm (connected in the comment_form.html)
-        form = Commentform()
+        form = CommentForm()
     return render(request, 'blog/comment_form.html', {'form':form})
 
 
@@ -120,5 +121,5 @@ def comment_remove(request,pk):
 @login_required
 def post_publish(request,pk):
     post = get_object_or_404(Post,pk=pk)
-    post.publish
+    post.publish()
     return redirect('post_detail',pk=pk)

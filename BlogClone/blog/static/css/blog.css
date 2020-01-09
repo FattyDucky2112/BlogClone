@@ -13,6 +13,27 @@
   margin-right: auto;
 }
 
+.postdate{
+  text-align: center;
+}
+
+.posttitle{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3em;
+  text-align: center;
+}
+
+.postcontent{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.btn-comment{
+  position: absolute;
+  right: 0px;
+}
+
 
 /* for cool stuff check codepen.io */
 

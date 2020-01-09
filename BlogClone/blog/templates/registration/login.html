@@ -11,7 +11,7 @@
 
   <form action="{% url 'login' %}" method="POST">
     {%csrf_token%}
-      {%form.as_p%}
+      {{form.as_p}}
       <input type="submit" class ="btn" value="Login">
       <!-- The {{next}} is part of the django login view and handles where to go after user logged in -->
       <input type="hidden" name="next" value="{{next}}">

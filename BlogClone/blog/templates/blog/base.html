@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
 
     <!-- Custom CSS (has to be the last of all css library calls)-->
-    <link rel="stylesheet" href="{%ststic 'css/blog.css' %}">
+    <link rel="stylesheet" href="{%static 'css/blog.css' %}">
 
     <!-- Google Forts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
@@ -25,18 +25,23 @@
       <div class="container">
         <ul class="navbar-nav mr-auto">
           <li><a class="navbar-brand bigbrand" href="{%url 'post_list'%}">MyBlog</a></li>
-          <li><a class="" href="{%url 'about'%}">About</a></li>
-          <li><a class="" href="https://www.github.com">GitHub</a></li>
+          <li><a class="nav-link" href="{%url 'about'%}">About</a></li>
+          <li><a class="nav-link" href="https://www.github.com">GitHub</a></li>
         </ul>
 
         <ul class="navbar-nav navbar-right">
           {%if user.is_authenticated%}
-          <li><a href="{% url 'post_new'%}">New Post</a></li>
-          <li><a href="{% url 'post_draft_list'%}">Drafts</a></li>
-          <li><a href="{% url 'logout'%}">Logout</a></li>
+          <li><a class="nav-link" href="{% url 'post_new'%}">New Post</a></li>
+          <li><a class="nav-link" href="{% url 'post_draft_list'%}">Drafts</a></li>
+          <li><a class="nav-link" href="{% url 'logout'%}">Logout</a></li>
           <li><a>Welcome: {{user.username}} </a></li>
             {%else%}
-            <li><a href="{%url 'login'%}"> <span class="glyphicon glyphicon-user"></span></a></li>
+          <li><button type="button" class="btn btn-default">
+              <span class="glyphicon glyphicon-user">
+                <a href="{%url 'login'%}" aria-hidden="true">Login</a>
+              </span>
+            </button>
+          </li>
           {%endif%}
         </ul>
       </div>
